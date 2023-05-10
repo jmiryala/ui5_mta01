@@ -1,0 +1,90 @@
+_schema-version: "3.2"
+ID: ui5_mta01
+description: Fiori elements app
+version: 0.0.1
+modules:
+- name: ui5_mta01-router
+  type: approuter.nodejs
+  path: router
+  requires:
+  - name: ui5_mta01-html5-repo-runtime
+  - name: ui5_mta01-uaa
+  - name: ui5_mta01-destination-service
+    group: destinations
+    properties:
+      forwardAuthToken: false
+      name: ui5
+      url: https://ui5.sap.com
+  parameters:
+    disk-quota: 256M
+    memory: 256M
+- name: ui5_mta01-app-content
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: ui5_mta01-repo-host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - artifacts:
+      - jhrabtpdevopsui5module01.zip
+      name: jhrabtpdevopsui5module01
+      target-path: resources/
+- name: jhrabtpdevopsui5module01
+  type: html5
+  path: ui5module01
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+resources:
+- name: ui5_mta01-uaa
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      tenant-mode: dedicated
+      xsappname: ui5_mta01-${space-guid}
+    service: xsuaa
+    service-plan: application
+- name: ui5_mta01-html5-repo-runtime
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-plan: app-runtime
+- name: ui5_mta01-destination-service
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      HTML5Runtime_enabled: false
+      init_data:
+        instance:
+          destinations:
+          - Authentication: NoAuthentication
+            Name: ui5
+            ProxyType: Internet
+            Type: HTTP
+            URL: https://ui5.sap.com
+          existing_destinations_policy: update
+      version: 1.0.0
+    service: destination
+    service-name: ui5_mta01-destination-service
+    service-plan: lite
+- name: ui5_mta01-repo-host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-name: ui5_mta01-html5-srv
+    service-plan: app-host
+parameters:
+  deploy_mode: html5-repo
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+  - builder: custom
+    commands:
+    - npm install
