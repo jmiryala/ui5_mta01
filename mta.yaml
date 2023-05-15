@@ -52,7 +52,7 @@ resources:
       oauth2-configuration: 
         redirect-uris:
          - https://0ebdd894trial-dev-devops-dev-ui5-mta01-router.cfapps.us10-001.hana.ondemand.com/login/callback
-         
+         - https://camelot-itlab-gmbh---payasyougo-camelot-payg-zpqndfkk-de900836c.cfapps.eu10-004.hana.ondemand.com
     service: xsuaa
     service-plan: application
 - name: ui5_mta01-html5-repo-runtime
