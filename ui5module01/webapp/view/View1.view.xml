@@ -1,7 +1,7 @@
 <mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="jhra.btpdevops.ui5module01.controller.View1" displayBlock="true">
     <Page id="page" title="{i18n>title}">
         <content>
-            <Label text="Hello World from DevOps.V00!" width="100%" id="label0_1683790041478" design="Bold" textAlign="Center" vAlign="Middle"/>
+            <Label text="Hello World from DevOps.V01!" width="100%" id="label0_1683790041478" design="Bold" textAlign="Center" vAlign="Middle"/>
         </content>
     </Page>
 </mvc:View>
